@@ -7,7 +7,8 @@ import 'package:pliiz_web/constants/db_contansts.dart';
 import 'package:pliiz_web/main.dart';
 import 'package:pliiz_web/model/qrcode_model.dart';
 import 'package:pliiz_web/screens/dialogs/update_qrcode_dialog.dart';
-import 'package:short_uuids/short_uuids.dart';
+import 'package:uuid/uuid.dart';
+//import 'package:short_uuids/short_uuids.dart';
 
 import 'choices.controller.dart';
 
@@ -38,8 +39,9 @@ class HomeController extends GetxController{
   void addQrCode() async {
     try{
       if(title.text.isNotEmpty){
-        final translator = ShortUuid.init();
-        String id = translator.generate();
+        // final translator = ShortUuid.init();
+        // String id = translator.generate();
+        String id = const Uuid().v4();
         QrCodeModel qr = QrCodeModel(
           userName: auth.currentUser!.displayName??"",
           userId: auth.currentUser!.uid,

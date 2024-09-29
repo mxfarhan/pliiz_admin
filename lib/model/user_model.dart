@@ -11,18 +11,19 @@ class UserModel {
   int? noOfQRCodes;
   dynamic createdAt;
 
-  UserModel(
-      {required this.companyName,
-      required this.contactName,
-      required this.address,
-      required this.city,
-      required this.country,
-      required this.email,
-      required this.phone,
-      this.noOfEmployees,
-      this.noOfQRCodes,
-      required this.isActive,
-      required this.createdAt});
+  UserModel({
+    required this.companyName,
+    required this.contactName,
+    required this.address,
+    required this.city,
+    required this.country,
+    required this.email,
+    required this.phone,
+    this.noOfEmployees,
+    this.noOfQRCodes,
+    required this.isActive,
+    required this.createdAt,
+  });
 
   Map<String, dynamic> toMap(UserModel user) {
     var data = <String, dynamic>{};
@@ -49,9 +50,15 @@ class UserModel {
       country: data["country"] ?? "",
       email: data["email"] ?? "",
       phone: data["phone"] ?? "",
-      noOfEmployees: data["noOfEmployees"] ?? "",
-      noOfQRCodes: data["noOfQRCodes"] ?? "",
-      isActive: data["isActive"] ?? "",
+      noOfEmployees: data["noOfEmployees"] is String
+          ? int.tryParse(data["noOfEmployees"]) // Handle case where it's a String
+          : data["noOfEmployees"], // Handle when it's an int or null
+      noOfQRCodes: data["noOfQRCodes"] is String
+          ? int.tryParse(data["noOfQRCodes"]) // Handle case where it's a String
+          : data["noOfQRCodes"], // Handle when it's an int or null
+      isActive: data["isActive"] is bool
+          ? data["isActive"]
+          : (data["isActive"] == "true" || data["isActive"] == 1), // Safely convert to bool
       createdAt: data["createdAt"] ?? "",
     );
   }

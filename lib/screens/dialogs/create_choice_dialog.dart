@@ -16,7 +16,7 @@ class _CreateChoiceDialogState extends State<CreateChoiceDialog> {
   Widget build(BuildContext context) {
     return Container(
       width: Get.width * 0.5,
-      height: Get.height * 0.60,
+      height: Get.height * 0.70,
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(horizontal: height(context) * 0.03),
       child: Column(
@@ -24,12 +24,12 @@ class _CreateChoiceDialogState extends State<CreateChoiceDialog> {
           Text(
             'Create New',
             style: GoogleFonts.openSans(
-              fontWeight: FontWeight.w400,
-              color: AppColors.blackColor,
-              fontSize: height(context) * 0.021,
+              fontWeight: FontWeight.bold, // Bold text for emphasis
+              color: AppColors.primaryColor, // White text for contrast
+              fontSize: height(context) * 0.025, // Responsive font size
             ),
           ),
-          SizedBox(height: height(context) * 0.001),
+          SizedBox(height: height(context) * 0.02),
           /// field
           SizedBox(
             width: height(context) * 0.5,
@@ -79,22 +79,55 @@ class _CreateChoiceDialogState extends State<CreateChoiceDialog> {
             ),
           ),
           SizedBox(height: height(context) * 0.02),
-          SizedBox(
+          Container(
             width: height(context) * 0.5,
-            child: CustomTextField(
-              margin: 0.0,
-              controller: choice.url,
-              fieldColor:  AppColors.whiteColor,
-              fieldShadow: shadowsTwo,
-              obscureText: false,
-              suffixIcon: null,
-              labelText: 'Enter Url of Website',
-              hintText: 'Enter Url of Website',
-              labelTextColor: AppColors.blackColor.withOpacity(0.5),
-              hintTextColor: AppColors.blackColor.withOpacity(0.5),
+            child: Column(
+              children: [
+                // Existing SizedBox with CustomTextField
+                SizedBox(
+                  width: height(context) * 0.5,
+                  child: CustomTextField(
+                    margin: 0.0,
+                    controller: choice.url,
+                    fieldColor: AppColors.whiteColor,
+                    fieldShadow: shadowsTwo,
+                    obscureText: false,
+                    suffixIcon: null,
+                    labelText: 'Enter Url of Website',
+                    hintText: 'Enter Url of Website',
+                    labelTextColor: AppColors.blackColor.withOpacity(0.5),
+                    hintTextColor: AppColors.blackColor.withOpacity(0.5),
+                  ),
+                ),
+                SizedBox(height: height(context) * 0.02),// Space between the TextField and the new Row
+                // Row with "Custom notification" Text and a Switch
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Text Widget
+                    Text(
+                      'Allow User Input',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: AppColors.blackColor.withOpacity(0.7),
+                      ),
+                    ),
+                    // Switch Widget
+                    Switch(
+                      value: choice.isText,
+                      onChanged: (bool value) {
+                        setState(() {
+                          choice.toggleSwitch(value); // Update the switch state
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-          SizedBox(height: height(context) * 0.024),
+          SizedBox(height: height(context) * 0.02),
+
           GetBuilder(
             init: choice,
             builder: (_) {

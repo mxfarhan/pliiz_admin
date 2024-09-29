@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:pliiz_web/controllers/choices.controller.dart';
 import 'package:pliiz_web/model/user_model.dart';
 import 'package:universal_html/html.dart' as html;
@@ -59,14 +60,16 @@ class _MainScreenState extends State<MainScreen> {
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasData) {
+                      }else if (snapshot.hasData) {
                         qrCodes = [];
                         for (var doc in snapshot.data!.docs) {
-                          Map<String, dynamic> json =
-                              doc.data() as Map<String, dynamic>;
-                          QrCodeModel qr =
-                              QrCodeModel.fromJson(json: json, id: doc.id);
-                          qrCodes.add(qr);
+                          Map<String, dynamic> json = doc.data() as Map<String, dynamic>;
+                          try {
+                            QrCodeModel qr = QrCodeModel.fromJson(json: json, id: doc.id);
+                            qrCodes.add(qr);
+                          } catch (e) {
+                            print("Error parsing QR code data: $e");
+                          }
                         }
                         return Column(
                           children: [
@@ -125,8 +128,10 @@ class _MainScreenState extends State<MainScreen> {
                                         // print('this is value $json');
                                         UserModel user =
                                             UserModel.fromSnapshot(json);
-                                        print(
+                                        if (kDebugMode) {
+                                          print(
                                             'this is uid ${qrCodes.length}  ${user.noOfQRCodes!.toInt()}');
+                                        }
                                         qrCodes.length >=
                                                 user.noOfQRCodes!.toInt()
                                             ? isQrCreate = false
@@ -193,26 +198,51 @@ class _MainScreenState extends State<MainScreen> {
                             SizedBox(height: height(context) * 0.03),
                             Container(
                               height: Get.height - 200,
-                              child: SingleChildScrollView(
+                              child: qrCodes.isEmpty
+                                  ? Center(child: Text("No QR Codes Available"))
+                                  : SingleChildScrollView(
                                 child: Wrap(
                                   spacing: 10,
                                   runSpacing: 10,
                                   children: qrCodes
                                       .map(
                                         (e) => QRBoxWidget(
-                                          askText: e.title,
-                                          qrCode: e,
-                                          onTap: () {
-                                            setState(() {
-                                              selected = e;
-                                            });
-                                          },
-                                        ),
-                                      )
+                                      askText: e.title,
+                                      qrCode: e,
+                                      onTap: () {
+                                        setState(() {
+                                          selected = e;
+                                        });
+                                      },
+                                    ),
+                                  )
                                       .toList(),
                                 ),
                               ),
-                            ),
+                            )
+
+                            // Container(
+                            //   height: Get.height - 200,
+                            //   child: SingleChildScrollView(
+                            //     child: Wrap(
+                            //       spacing: 10,
+                            //       runSpacing: 10,
+                            //       children: qrCodes
+                            //           .map(
+                            //             (e) => QRBoxWidget(
+                            //               askText: e.title,
+                            //               qrCode: e,
+                            //               onTap: () {
+                            //                 setState(() {
+                            //                   selected = e;
+                            //                 });
+                            //               },
+                            //             ),
+                            //           )
+                            //           .toList(),
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         );
                       } else {

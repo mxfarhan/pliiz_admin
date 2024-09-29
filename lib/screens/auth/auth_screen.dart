@@ -111,23 +111,23 @@ class _AuthScreenState extends State<AuthScreen> {
                                       ),
                                     ),
                                     SizedBox(width: height(context) * 0.05),
-                                    // TextButton(
-                                    //   onPressed: () => controller.changeView(state: false),
-                                    //   autofocus: true,
-                                    //   child: Text(
-                                    //     'Register',
-                                    //     style: montserratRegular.copyWith(
-                                    //       fontSize: height(context) * 0.027,
-                                    //       color: controller.isLoginView.value == true ? AppColors.whiteColor : AppColors.whiteColor.withOpacity(0.4),
-                                    //     ),
-                                    //   ),
-                                    // ),
+                                    TextButton(
+                                      onPressed: () => controller.changeView(state: false),
+                                      autofocus: true,
+                                      child: Text(
+                                        'Register',
+                                        style: montserratRegular.copyWith(
+                                          fontSize: height(context) * 0.027,
+                                          color: controller.isLoginView.value == true ? AppColors.whiteColor : AppColors.whiteColor.withOpacity(0.4),
+                                        ),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
-                              // controller.isLoginView.value?
+                               controller.isLoginView.value?
                               const LoginView()
-                              // :const SignupView(),
+                               :const SignupView(),
                             ],
                           ),
                         ),

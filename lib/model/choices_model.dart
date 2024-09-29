@@ -2,6 +2,7 @@ class ChoicesModel{
   final String id;
   final String title;
   final bool isFile;
+  final bool isText;
   final String dialogMessage;
   String messageAfterConform;
   final String companyName;
@@ -13,6 +14,7 @@ class ChoicesModel{
     required this.id,
     required this.title,
     required this.isFile,
+    required this.isText,
     required this.dialogMessage,
     required this.companyName,
     required this.userId,
@@ -27,6 +29,7 @@ class ChoicesModel{
       "id": id,
       'title': title,
       'isFile': isFile,
+      'isText': isText,
       'dialogMessage': dialogMessage,
       'companyName': companyName,
       'userId': userId,
@@ -42,6 +45,7 @@ class ChoicesModel{
       id: id,
       title: map['title'] as String,
       isFile: map['isFile'] as bool,
+      isText: map['isText'] as bool,
       dialogMessage: map['dialogMessage'] as String,
       companyName: map['companyName'] as String,
       userId: map['userId'] as String,

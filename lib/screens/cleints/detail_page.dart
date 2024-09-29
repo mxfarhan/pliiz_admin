@@ -7,8 +7,8 @@ import 'package:pliiz_web/helpers/routes.dart';
 import 'package:pliiz_web/model/choices_model.dart';
 import 'package:pliiz_web/model/qrcode_model.dart';
 import 'package:pliiz_web/model/waiting_model.dart';
-import 'package:short_uuids/short_uuids.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:uuid/uuid.dart';
 import '../../constants/exports.dart';
 
 class DetailPage extends StatefulWidget {
@@ -248,8 +248,9 @@ class _DetailPageState extends State<DetailPage> {
     }
   }
   void handleConfirm({required ChoicesModel choice,required QrCodeModel code}) async {
-    const short = ShortUuid();
-    final id = short.generate();
+    // const short = ShortUuid();
+    // final id = short.generate();
+    final id = Uuid().v4();
 
     Get.back();
     Get.dialog(

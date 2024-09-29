@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pliiz_web/constants/db_contansts.dart';
@@ -49,7 +50,9 @@ class AuthController extends GetxController {
     update();
 
     if (!loginAsEmployee) {
-      print('this is login as admin');
+      if (kDebugMode) {
+        print('this is login as admin');
+      }
       try {
         await auth.signInWithEmailAndPassword(email: email, password: password);
 
@@ -60,14 +63,21 @@ class AuthController extends GetxController {
           String url = data["domain"];
           await setDomain(url);
         }
-        print('this is curent uid ${auth.currentUser!.uid}');
+
+        if (kDebugMode) {
+          print('this is curent uid ${auth.currentUser!.uid}');
+            Get.offAllNamed(keys.homePage);
+        }
+
         await db
             .collection(usersCollection)
             .doc(auth.currentUser!.uid)
             .get()
             .then((value) {
           Map<String, dynamic> json = value.data() as Map<String, dynamic>;
-          print('this is value ${UserModel.fromSnapshot(json)}');
+          if (kDebugMode) {
+            print('this is value ${UserModel.fromSnapshot(json)}');
+          }
           UserModel user = UserModel.fromSnapshot(json);
           userStatus = user.isActive;
           notifyChildrens();
@@ -79,13 +89,17 @@ class AuthController extends GetxController {
           toast("Wait for admin approval");
         }
       } catch (e) {
-        print(e);
+        if (kDebugMode) {
+          print('login admin error $e');
+        }
         toast("Check you email/password");
       }
       viewState = ViewState.idle;
       update();
     } else {
-      print('this is login as employee');
+      if (kDebugMode) {
+        print('this is login as employee');
+      }
       viewState = ViewState.busy;
       update();
       try {
@@ -122,6 +136,8 @@ class AuthController extends GetxController {
           toast("You are not employee");
         }
       } catch (e) {
+
+          print('login error: $e');
         toast("Check you email/password");
       }
       viewState = ViewState.idle;
